@@ -10,7 +10,7 @@ int mainMenu(){
     printf("    \\ V  V /   |  __/  | |  | |     | |   | |___   ___) |   | |   | |___  |  _ < \n");
     printf("     \\_/\\_/    |_|     |_|  |_|     |_|   |_____| |____/    |_|   |_____| |_| \\_\\\n");
     printf("\n"); 
-    printf("                            A terminal typing speed test\n" RESET);
+    printf("                            A terminal based typing arena\n" RESET);
     printf("\n");
     printf("  ================================================================================\n");
     printf("\n");

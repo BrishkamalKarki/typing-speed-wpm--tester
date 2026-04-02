@@ -89,8 +89,10 @@ int wpmCalculator(char words[][20], int wordCount){
     while(1){
         if (kbhit()){
             userChar = getch();
-            if (userChar == 22) // ignoring copy and paste
-                continue; 
+            if (kbhit()){ // ignoring copy and paste
+                while (kbhit()) getch(); // checking if there is any buffer remaining, remained - pasted - buffer cleared
+                continue;
+            }
             else if (numTtlCharWrtn >= strlen(paragraph)) // ending the text
                 continue;
             else if (userChar == '\t') // ignoring 'tab' key
