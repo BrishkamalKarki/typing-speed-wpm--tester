@@ -9,8 +9,8 @@ struct info
     char mode;
 } gameState;
 
-// initializing the typing arena
-int iniTester(char mode){
+// initializing the typing arena  
+int iniTester(char mode){  
     game_mode = mode;
     getRandLine();
     return 0;
@@ -53,11 +53,13 @@ int splitIntoWords(char sentences[]){
 
 // displaying the typing arena
 int wpmCalculator(char words[][20], int wordCount){
-    char userChar;
-    CLS;
+    int timer_pos_line = 3, timer_pos_char = 36;
+    int clock_ini, timer;
+    char userChar; 
+    CLS;  
     printf("  ================================================================================\n");
     printf("                                                            ---------------------\n");
-    printf("   WPM [" CYAN "000" RESET "] | ACC [" CYAN "000" RESET "] | TIME [" CYAN "27" RESET "]                        ||||||||||||||||||||| \n");
+    printf("   WPM [" CYAN "000" RESET "] | ACC [" CYAN "000" RESET "] | TIME [" CYAN "00" RESET "]                        ||||||||||||||||||||| \n");
     printf("                                                            ---------------------\n");
     printf("  ================================================================================\n\n\n");
     printf(GREY); 
@@ -69,8 +71,9 @@ int wpmCalculator(char words[][20], int wordCount){
     int currWordIndx = 0, numCharPLine[10], line = 0, numCharCurrLine = 0; 
     char content[600];
 
+
     printf("   " SAVE_CURSOR);
-    while(1){ 
+    while(1){
         printf("%s ", words[currWordIndx]); 
         numCharCurrLine += strlen(words[currWordIndx]) + 1; // +1 for the space, +1 for the . in the last line
         currWordIndx ++;
@@ -92,13 +95,22 @@ int wpmCalculator(char words[][20], int wordCount){
     // numTtlCharWrtn       : nunmber of total characters written from the begining
     // currLine             : number/index of the line we are currently in
     /* numCharTillPrevLine  : if [currLine = 0 : numCharTillPrevLine = 0] 
-                            if [currLine = 1 : numCharTillPrevLine = 0 + 59] ...
-                            storing the number of characters till previous line -> easy for backspace case to go to the upper line
-                              */
-    // numCharInCurrLine  : number of the character in the line we are currently in
+    if [currLine = 1 : numCharTillPrevLine = 0 + 59] ...
+    storing the number of characters till previous line -> easy for backspace case to go to the upper line
+    */
+   // numCharInCurrLine  : number of the character in the line we are currently in
     int numTtlCharWrtn = 0, currLine = 0, numCharTillPrevLine = 0, numCharInCurrLine = numCharPLine[0];
     line = 0;
+    clock_ini = time(0);
+    printf(SHOW_CURSOR);
     while(1){
+        timer = time(0) - clock_ini;
+        if (timer >= 0 && timer <= 9){
+            printf(SAVE_CURSOR HIDE_CURSOR "\033[%d;%dH\b" CYAN "%d" RESET LOAD_CURSOR SHOW_CURSOR, timer_pos_line, timer_pos_char, timer);
+        }
+            else{
+            printf(SAVE_CURSOR HIDE_CURSOR "\033[%d;%dH\b\b" CYAN "%d" RESET LOAD_CURSOR SHOW_CURSOR, timer_pos_line, timer_pos_char, timer);
+        }
         if (kbhit()){
             userChar = getch();
             if (kbhit()){ // ignoring copy and paste

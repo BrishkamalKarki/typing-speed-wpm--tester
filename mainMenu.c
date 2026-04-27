@@ -4,9 +4,9 @@
 char mode;
 char mainMenu(){
     while(1){
-    CLS;
-    printf("\n\n\n" CYAN );
-    printf("  __        __  ____    __  __     _____   _____   ____    _____   _____   ____  \n");
+        CLS;
+        printf("\n\n\n" CYAN );
+        printf("  __        __  ____    __  __     _____   _____   ____    _____   _____   ____  \n");
     printf("  \\ \\      / / |  _ \\  |  \\/  |   |_   _| | ____| / ___|  |_   _| | ____| |  _ \\ \n");
     printf("   \\ \\ /\\ / /  | |_) | | |\\/| |     | |   |  _|   \\___ \\    | |   |  _|   | |_) |\n");
     printf("    \\ V  V /   |  __/  | |  | |     | |   | |___   ___) |   | |   | |___  |  _ < \n");
@@ -34,15 +34,16 @@ char mainMenu(){
     printf("\n\n");
     getMode();
     if (mode == 'Q')
-        exit(0);
+    exit(0);
     if (mode == '1' || mode == '2' || mode == '3')
-        break;
-    }
-    return mode;
+    break;
+}
+return mode;
 }
 
 // taking the mode input from the user
 char getMode(){
+    printf(HIDE_CURSOR);
     mode = getch();
     return mode;
 }
