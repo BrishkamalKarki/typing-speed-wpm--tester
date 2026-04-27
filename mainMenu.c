@@ -3,6 +3,10 @@
 // loading the initial main menu
 char mode;
 char mainMenu(){
+    FILE *fPtr = fopen("highestScore.txt", "r");
+    int highSc;
+    fscanf(fPtr, "%d", &highSc);
+    fclose(fPtr);
     while(1){
         CLS;
         printf("\n\n\n" CYAN );
@@ -16,7 +20,7 @@ char mainMenu(){
     printf("\n");
     printf("  ================================================================================\n");
     printf("\n");
-    printf("   HIGHEST SCORE  : " CYAN " 000 " RESET "WPM\n");
+    printf("   HIGHEST SCORE  : " CYAN " %d " RESET "WPM\n", highSc);
     printf("\n");
     printf("  ================================================================================\n");
     printf("\n");

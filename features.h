@@ -13,3 +13,4 @@
 #define HIDE_CURSOR	"\033[?25l"
 #define SHOW_CURSOR	"\033[?25h"
 #define MOVE_TO_TIME "\033[%d;%d"
+ 
