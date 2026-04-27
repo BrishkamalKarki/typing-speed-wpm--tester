@@ -1,2 +1,2 @@
-int mainMenu();
-int getMode();
+char mainMenu();
+char getMode();

@@ -8,7 +8,7 @@ int main(){
 }
 
 int wpmInterface(){ 
-    mainMenu();
-    iniTester();
+    char mode = mainMenu();
+    iniTester(mode);
     return 0; 
 }

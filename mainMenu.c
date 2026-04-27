@@ -1,7 +1,9 @@
 #include "main.h"
 
 // loading the initial main menu
-int mainMenu(){
+char mode;
+char mainMenu(){
+    while(1){
     CLS;
     printf("\n\n\n" CYAN );
     printf("  __        __  ____    __  __     _____   _____   ____    _____   _____   ____  \n");
@@ -30,17 +32,17 @@ int mainMenu(){
     printf("\n");
     printf("  ================================================================================\n");
     printf("\n\n");
-
     getMode();
-    return 0;
+    if (mode == 'Q')
+        exit(0);
+    if (mode == '1' || mode == '2' || mode == '3')
+        break;
+    }
+    return mode;
 }
 
 // taking the mode input from the user
-int getMode(){
-    gameState.mode = getch();
-    if (gameState.mode == 'Q')
-        exit(0);
-    if (gameState.mode != '1' && gameState.mode != '2' && gameState.mode != '3')
-        mainMenu();
-    return 0;
+char getMode(){
+    mode = getch();
+    return mode;
 }

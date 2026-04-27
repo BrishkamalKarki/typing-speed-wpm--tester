@@ -10,4 +10,3 @@
 #include "features.h"
 #include "mainMenu.h"
 #include "engine.h"
-#include "info.h"

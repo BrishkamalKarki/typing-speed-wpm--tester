@@ -1,7 +1,17 @@
 #include "main.h"
 
+char paragraph[600];
+char game_mode;
+// Defining the struct here for saving the current WPM and user choosen mode
+struct info
+{
+    int  wpm;
+    char mode;
+} gameState;
+
 // initializing the typing arena
-int iniTester(){
+int iniTester(char mode){
+    game_mode = mode;
     getRandLine();
     return 0;
 }
@@ -30,6 +40,7 @@ int splitIntoWords(char sentences[]){
     
     // taking the words from the full sentences and putting each word in words array
     word = strtok(sentences, " \n"); // returns the pointer to the 1st character of 1st word, words spllited on the basis of ' '
+    
     while (word != NULL){
         strcpy(words[wordCount], word);
         word = strtok(NULL, " \n"); // words spllited on the basis of ' ' and '\n'
@@ -50,6 +61,7 @@ int wpmCalculator(char words[][20], int wordCount){
     printf("                                                            ---------------------\n");
     printf("  ================================================================================\n\n\n");
     printf(GREY); 
+    // FOR ALREADY WRITTEN
     // currWordIndx    : storing index of the word we reached in words[]
     // numCharPLine    : array storing number of characters written per line ([59, 66, 72, ...])
     // line            : storing which line we are in (line 1 = 0, line 2 = 1, ...)
@@ -60,7 +72,7 @@ int wpmCalculator(char words[][20], int wordCount){
     printf("   " SAVE_CURSOR);
     while(1){ 
         printf("%s ", words[currWordIndx]); 
-        numCharCurrLine += strlen(words[currWordIndx]) + 1; // +1 for the space 
+        numCharCurrLine += strlen(words[currWordIndx]) + 1; // +1 for the space, +1 for the . in the last line
         currWordIndx ++;
         if (currWordIndx % 13 == 0){ // each line will have 13 words
             printf("\n"); 

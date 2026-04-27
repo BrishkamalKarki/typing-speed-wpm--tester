@@ -1,8 +1,8 @@
 int wpmInterface(); 
 
-int iniTester(); 
+int iniTester(char); 
 int getRandLine();
 int splitIntoWords(char[]);
 int wpmCalculator(char[][20], int); // main logic
 
-char paragraph[600];
+
