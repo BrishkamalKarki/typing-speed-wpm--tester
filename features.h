@@ -1,4 +1,5 @@
 // ansi codes for the colour coding
+#define PURPLE  "\033[38;2;102;47;115m"
 #define RED     "\033[1;31m"
 #define GREEN   "\033[1;32m"   
 #define YELLOW  "\033[1;33m"   
@@ -13,4 +14,5 @@
 #define HIDE_CURSOR	"\033[?25l"
 #define SHOW_CURSOR	"\033[?25h"
 #define MOVE_TO_TIME "\033[%d;%d"
+
  

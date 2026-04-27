@@ -38,9 +38,9 @@ char mainMenu(){
     printf("\n\n");
     getMode();
     if (mode == 'Q')
-    exit(0);
+        exit(0);
     if (mode == '1' || mode == '2' || mode == '3')
-    break;
+        break;
 }
 return mode;
 }

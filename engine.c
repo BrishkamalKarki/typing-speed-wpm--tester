@@ -59,15 +59,14 @@ int splitIntoWords(char sentences[]){
 
 // displaying the typing arena
 int wpmCalculator(char words[][20], int wordCount){
-    int pos_line = 3, timer_pos_char = 36, wpm_pos_char = 12, acc_pos_char = 24;
-    int clock_ini, timer, initialized_timer = 0;
+    int rowGUI = 3, timerCol = 36, wpmCol = 12, accCol = 24, prgBarCol = 62, newBars = 0, bars = 0;
+    int clockIni, timer, initializedTimer = 0;
     char userChar; 
     CLS;  
     printf("  ================================================================================\n");
-    printf("                                                            ---------------------\n");
-    printf("   WPM [" CYAN "000" RESET "] | ACC [" CYAN "000" RESET "] | TIME [" CYAN "00" RESET "]                        ||||||||||||||||||||| \n");
-    printf("                                                            ---------------------\n");
-    printf(RESET "\n"); 
+    printf("                                                             --------------------\n");
+    printf("   WPM [" CYAN "000" RESET "] | ACC [" CYAN "000" RESET "] | TIME [" CYAN "00" RESET "]\n");
+    printf("                                                             --------------------\n");
     printf("  ================================================================================\n\n\n");
     printf(GREY); 
     // FOR ALREADY WRITTEN
@@ -109,46 +108,47 @@ int wpmCalculator(char words[][20], int wordCount){
     line = 0; // num of line user have reached
     int ttlNumCharsInParagraph = strlen(paragraph);
     char ttlCharWritten[600];
+    int targetTime;
+    if (gameState.mode == '1')
+        targetTime = 10;
+    else if (gameState.mode == '2')
+        targetTime = 20;
+    else
+        targetTime = 30;
     printf(SHOW_CURSOR); 
     while(1){ 
-        if (initialized_timer){
+        if (initializedTimer){
             // timer part over here 
-            timer = time(0) - clock_ini;  
-            if (timer >= 0 && timer <= 9){  
-                printf(SAVE_CURSOR HIDE_CURSOR "\033[%d;%dH\b" CYAN "%d" RESET LOAD_CURSOR SHOW_CURSOR, pos_line, timer_pos_char, timer);
-            } 
-            else{ 
-                printf(SAVE_CURSOR HIDE_CURSOR "\033[%d;%dH\b\b" CYAN "%d" RESET LOAD_CURSOR SHOW_CURSOR, pos_line, timer_pos_char, timer);
-            } 
+            timer = time(0) - clockIni;  
+            printf(SAVE_CURSOR HIDE_CURSOR "\033[%d;%dH\b\b" CYAN "%02d" RESET LOAD_CURSOR SHOW_CURSOR, rowGUI, timerCol, targetTime - timer);
+
             if (timer > 0 && numTtlCharWrtn > 0){ 
                 // raw WPM part over here 
                 gameState.rawWPM = (int)(((float)numTtlCharWrtn / 5) / ((float)timer / 60)); 
-                if (gameState.rawWPM >= 0 && gameState.rawWPM <= 9){  
-                    printf(SAVE_CURSOR HIDE_CURSOR "\033[%d;%dH\b\b\b" CYAN "00%d" RESET LOAD_CURSOR SHOW_CURSOR, pos_line, wpm_pos_char, gameState.rawWPM);
-                } 
-                else if (gameState.rawWPM >= 10 && gameState.rawWPM <= 99){  
-                    printf(SAVE_CURSOR HIDE_CURSOR "\033[%d;%dH\b\b\b" CYAN "0%d" RESET LOAD_CURSOR SHOW_CURSOR, pos_line, wpm_pos_char, gameState.rawWPM);
-                } 
-                else{ 
-                    printf(SAVE_CURSOR HIDE_CURSOR "\033[%d;%dH\b\b\b" CYAN "%d" RESET LOAD_CURSOR SHOW_CURSOR, pos_line, wpm_pos_char, gameState.rawWPM);
-                } 
-                // accuracy part over here  
+                printf(SAVE_CURSOR HIDE_CURSOR "\033[%d;%dH\b\b\b" CYAN "%03d" RESET LOAD_CURSOR SHOW_CURSOR, rowGUI, wpmCol, gameState.rawWPM);
+                // accuracy part over here 
                 gameState.accuracy = ((float)gameState.correct * 100) / (float)numTtlCharWrtn; 
-                if (gameState.accuracy >= 0 && gameState.accuracy <= 9){  
-                    printf(SAVE_CURSOR HIDE_CURSOR "\033[%d;%dH\b\b\b" CYAN "00%d" RESET LOAD_CURSOR SHOW_CURSOR, pos_line, acc_pos_char, gameState.accuracy);
-                } 
-                else if (gameState.accuracy >= 10 && gameState.accuracy <= 99){  
-                    printf(SAVE_CURSOR HIDE_CURSOR "\033[%d;%dH\b\b\b" CYAN "0%d" RESET LOAD_CURSOR SHOW_CURSOR, pos_line, acc_pos_char, gameState.accuracy);
-                } 
-                else{ 
-                    printf(SAVE_CURSOR HIDE_CURSOR "\033[%d;%dH\b\b\b" CYAN "%d" RESET LOAD_CURSOR SHOW_CURSOR, pos_line, acc_pos_char, gameState.accuracy);
+                printf(SAVE_CURSOR HIDE_CURSOR "\033[%d;%dH\b\b\b" CYAN "%03d" RESET LOAD_CURSOR SHOW_CURSOR, rowGUI, accCol, gameState.accuracy);
+                // progress bar part over here
+                gameState.progress = (int)((float)gameState.correct* 100 / ttlNumCharsInParagraph);
+                newBars = (int)gameState.progress / 5;
+                if (gameState.progress % 5 == 0 && newBars != bars){ // only drawing for 1 1 bars
+                    bars = newBars;
+                    printf(SAVE_CURSOR HIDE_CURSOR "\033[%d;%dH" PURPLE, rowGUI, prgBarCol);
+                    for( int i = 1; i <= 20; i++ ){
+                        if (i > newBars)
+                            printf(" ");
+                        else
+                            printf("|");
+                    }
+                    printf(RESET LOAD_CURSOR SHOW_CURSOR);
                 }
             }
         }
         if (kbhit()){ 
-            if (initialized_timer == 0){ 
-                clock_ini = time(0);  
-                initialized_timer = 1; 
+            if (initializedTimer == 0){ 
+                clockIni = time(0);  
+                initializedTimer = 1; 
             } 
             userChar = getch(); 
             if (kbhit()){ // ignoring copy and paste  
@@ -201,19 +201,10 @@ int wpmCalculator(char words[][20], int wordCount){
                 } 
             } 
         } 
-        if (gameState.mode == '1'){
-            if (timer > 10)
-                break;
+        if (timer > targetTime)
+            break;
+        
         }
-        else if (gameState.mode == '2'){
-            if (timer > 20)
-                break;
-            }
-            else{
-                if (timer > 30)
-                    break;
-        }
-    } 
     showResults(gameState.rawWPM, gameState.accuracy, gameState.progress);
     return 0; 
 } 

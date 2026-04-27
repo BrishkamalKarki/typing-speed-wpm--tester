@@ -3,37 +3,42 @@
 int showResults(int rawWPM, int accuracy, int progress){
     char retryChar;
     int opWPM = rawWPM * accuracy / 100;
-    FILE *fPtr = fopen("highestScore.txt", "w");
+    FILE *fPtr = fopen("highestScore.txt", "r");
     int highSc;
     fscanf(fPtr, "%d", &highSc);
-    if (highSc < opWPM)
-        fprintf(fPtr, "%d", opWPM);
+    if (highSc < opWPM){
+        FILE *wfPtr = fopen("highestScore.txt", "w");
+        fprintf(wfPtr, "%d", opWPM);
+        highSc = opWPM;
+        fclose(wfPtr);
+    }
     fclose(fPtr);
+
     printf(RESET);
     CLS;
     printf("\n\n");
     printf("  ================================================================================\n");
-    printf("   TEST COMPLETE!\n");
+    printf("   TEST COMPLETED\n");
     printf("  ================================================================================\n\n");
 
-    // display stats
-    printf("   Your Results:\n\n");
-    printf("   Raw WPM: " CYAN "%d" RESET "\n", rawWPM);
-    printf("   Optimized WPM: " CYAN "%d" RESET "\n", opWPM);
-    printf("   Accuracy: " GREEN "%d%%" RESET "\n", accuracy);
-    printf("   Text Completed: " YELLOW "%d%%" RESET "\n", progress);
+    // display stats over here
+    printf("   YOUR RESULTS:\n\n");
+    printf("   RAW WPM          [ " CYAN "%03d" RESET " ]\n", rawWPM);
+    printf("   OPTIMIZED WPM    [ " CYAN "%03d" RESET " ]\n", opWPM);
+    printf("   HIGHEST WPM      [ " CYAN "%03d" RESET " ]\n", highSc);
+    printf("   ACCURACY         [ " GREEN "%03d%%" RESET " ]\n", accuracy);
+    printf("   TEXT COMPLETED   [ " YELLOW "%03d%%" RESET " ]\n", progress);
     printf("\n");
     printf("  ================================================================================\n\n");
-    printf("   Press " CYAN "R" RESET " to try again, or press " CYAN "Q" RESET " to quit\n\n");
+    printf("   press " CYAN "R" RESET " to go to Main Menu | press " CYAN "Q" RESET " to quit\n\n");
     printf("  ================================================================================\n\n");
 
     printf(HIDE_CURSOR);
     retryChar = getch();
-    printf(SHOW_CURSOR);
 
-    if (retryChar == 'Q' || retryChar == 'q')
+    if (retryChar == 'Q')
         exit(0);
-    else if (retryChar == 'R' || retryChar == 'r')
+    else if (retryChar == 'R')
         wpmInterface();
     else
         showResults(rawWPM, accuracy, progress);
